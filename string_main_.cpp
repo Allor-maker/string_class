@@ -146,5 +146,10 @@ int main()
 	int index_long = str_long.find("abcdefgh");
 	std::cout << index_long << std::endl;
 
+	str4[2] = '3';
+	str4.print();
+	char obj = str4[2];
+	std::cout << obj << std::endl;
+
 }
 

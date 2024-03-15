@@ -14,7 +14,7 @@ int string::len() const
 	return this->n;
 }
 
-char string::operator[](const int& index) const
+char& string::operator[](const int& index) const
 {
 	return this->data[index];
 }

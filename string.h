@@ -44,7 +44,7 @@ public:
 	
 	int len() const;
 
-	char operator[](const int& index) const;
+	char& operator[](const int& index) const;
 
 	bool empty() const;
 
