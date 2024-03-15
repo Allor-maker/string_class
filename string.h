@@ -58,8 +58,10 @@ public:
 
 	string substr(int pos, int len) const;
 
-	int find(const string& str) const;
+	int find(const string& str);
 
+	int* prefix(const string& v);
+	
 	bool operator==(const string& str) const;
 
 	bool operator!=(const string& str) const;

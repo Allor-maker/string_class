@@ -102,37 +102,109 @@ string string::substr(int pos, int len) const
 	}
 	return c;
 }
-int string::find(const string& str) const
+/*int string::find_kmp(const string& str)
 {
-	int index = 0;
-	unsigned long long f_value = 0;
-	unsigned long long value = 0;
-	int pows = 1;
-	for (int i = 0; i < str.n; i++)
-	{
-		f_value = (f_value * pows + int(str.data[i]));
-		pows = 1000;//сдвигаем хеш влево на 3 символа и записываем справа новый код числа
-	}
-	pows = 1;
-	unsigned long long k = 1;
-	for (int i = 0; i < str.n; i++) {
-		k *= 1000;//ищем к для пересчета хэша
-	}
-	for (int i = 0; i < n; i++)
-	{
-		value = (value * pows) % k + int(this->data[i]);
-		pows = 1000;
-		if (value == f_value)
+	int index = -1;
+	int* data_pi = prefix(*this);
+	int k = 0;
+
+	for (int i = 0; i < this->n; i++) {
+		while (k > 0 && this->data[i] != str.data[k])
 		{
-			index = i - (str.n - 1);
-			break;
+			k = data_pi[k - 1];
 		}
-		if (i == n - 1)
+		if (this->data[i] == str.data[k])
+			k++;
+		if (k == str.n)
 		{
-			return -1;
+			index = i - k + 1;
+			break;
 		}
 	}
 	return index;
+
+}
+*/
+int* string::prefix(const string& v)
+{
+	int* pi = new int[v.n];
+
+	for (int i = 0; i < v.n; i++)
+		pi[i] = 0;
+
+	for (int i = 1; i < v.n; i++)
+	{
+		int j = pi[i - 1];
+
+		while (j > 0 && v.data[i] != v.data[j])
+			j = pi[j - 1];
+
+		if (v.data[i] == v.data[j])
+			pi[i] = j + 1;
+
+		else
+			pi[i] = j;
+
+	}
+
+	return pi;
+}
+int string::find(const string& str) 
+{
+	int max_num = 6;//максимальное число элемкнтов в подстроке, которое можно обработать с помощью описанного ниже хеша
+	int index = -1;
+	if (str.n > max_num)//чтобы не переполнять целочисленный тип используем алгоритм К-М-П
+	{
+		int* data_pi = prefix(*this);
+		int k = 0;
+
+		for (int i = 0; i < this->n; i++) {
+			while (k > 0 && this->data[i] != str.data[k])
+			{
+				k = data_pi[k - 1];
+			}
+			if (this->data[i] == str.data[k])
+				k++;
+			if (k == str.n)
+			{
+				index = i - k + 1;
+				break;
+			}
+		}
+		delete[] data_pi;
+		return index;
+	}
+	else {
+		//используем хеш, если длина подстроки <= 6
+		unsigned long long f_value = 0;
+		unsigned long long value = 0;
+		int pows = 1;
+		for (int i = 0; i < str.n; i++)
+		{
+			f_value = (f_value * pows + int(str.data[i]));
+			pows = 1000;//сдвигаем хеш влево на 3 символа и записываем справа новый код числа
+		}
+		pows = 1;
+		unsigned long long k = 1;
+		for (int i = 0; i < str.n; i++) {
+			k *= 1000;//ищем к для пересчета хэша
+		}
+		for (int i = 0; i < n; i++)
+		{
+			value = (value * pows) % k + int(this->data[i]);
+			pows = 1000;
+			if (value == f_value)
+			{
+				index = i - (str.n - 1);
+				break;
+			}
+			if (i == n - 1)
+			{
+				return -1;
+			}
+		}
+		return index;
+	}
 }
 bool string::operator==(const string& str) const
 {
@@ -323,3 +395,4 @@ string& string::operator=(const string& v)
 	}
 	return *this;
 }
+

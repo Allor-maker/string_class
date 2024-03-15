@@ -135,5 +135,16 @@ int main()
 	string str4("hello world!");
 	int ind4 = str4.find("ello wo");
 	std::cout << ind4 << std::endl;
+
+	string findcmp("abcabcd");
+	string abcd("abcd");
+	int f_cmp = findcmp.find(abcd);
+	std::cout << f_cmp << std::endl;
+
+	//тест на работу алгоритма КМП
+	string str_long("ababcdefghiqwert");
+	int index_long = str_long.find("abcdefgh");
+	std::cout << index_long << std::endl;
+
 }
 
