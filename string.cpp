@@ -102,30 +102,8 @@ string string::substr(int pos, int len) const
 	}
 	return c;
 }
-/*int string::find_kmp(const string& str)
-{
-	int index = -1;
-	int* data_pi = prefix(*this);
-	int k = 0;
 
-	for (int i = 0; i < this->n; i++) {
-		while (k > 0 && this->data[i] != str.data[k])
-		{
-			k = data_pi[k - 1];
-		}
-		if (this->data[i] == str.data[k])
-			k++;
-		if (k == str.n)
-		{
-			index = i - k + 1;
-			break;
-		}
-	}
-	return index;
-
-}
-*/
-int* string::prefix(const string& v)
+int* string::prefix(const string& v) 
 {
 	int* pi = new int[v.n];
 
@@ -146,7 +124,6 @@ int* string::prefix(const string& v)
 			pi[i] = j;
 
 	}
-
 	return pi;
 }
 int string::find(const string& str) 
@@ -174,7 +151,9 @@ int string::find(const string& str)
 		delete[] data_pi;
 		return index;
 	}
-	else {
+
+	else 
+	{
 		//используем хеш, если длина подстроки <= 6
 		unsigned long long f_value = 0;
 		unsigned long long value = 0;
